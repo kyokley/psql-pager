@@ -1,0 +1,4 @@
+#!/bin/bash
+what=-
+test "$@" && what="$@"
+exec vim -u NONE -S ~/.vim/bundle/vim-less/plugin/pgcli.vim -c Less $what
