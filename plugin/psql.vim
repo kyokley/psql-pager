@@ -1,6 +1,8 @@
 " :Less
 " turn vim into a pager for psql aligned results 
 fun! Less()
+  autocmd BufEnter * let &titlestring = 'PSQL Pager'
+  set title
   set nocompatible
   set nowrap
   set nowrapscan
