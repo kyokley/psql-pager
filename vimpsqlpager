@@ -1,4 +1,4 @@
 #!/bin/bash
 what=-
 test "$@" && what="$@"
-exec vim -u NONE -S ~/.vim/bundle/vim-psql-pager/plugin/psql.vim -c Less $what
+exec vi -u NONE -S ~/.vim/bundle/vim-psql-pager/plugin/psql.vim -c Less $what
