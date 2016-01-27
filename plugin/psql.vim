@@ -24,6 +24,7 @@ fun! Less()
   execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
   wincmd k
   execute 'silent! norm! P'
+  silent! $-1,$d
 
   wincmd j
   silent! g/^(\d\+ row/d | wincmd k | execute "silent! norm! P" | wincmd j
