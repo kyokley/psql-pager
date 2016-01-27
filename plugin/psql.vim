@@ -23,7 +23,20 @@ fun! Less()
   wincmd k
   execute 'silent! norm! P'
   " resize upper window to one line; two lines are not needed because vim adds separating line
-  execute 'resize 1'
+
+  wincmd j
+  execute 'silent! $,$d'
+  execute 'silent! $,$d'
+  let line_length = max(map(getline(1, '$'), 'len(v:val)'))
+  wincmd k
+  execute 'silent! norm! P'
+  execute "%s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
+  execute "1"
+  " resize upper window to two lines
+  execute 'resize 2'
+  " switch to lower window
+  wincmd j
+
   " switch to lower window and scroll 2 lines down 
   wincmd j
   "execute 'norm! 2'
