@@ -18,13 +18,12 @@ fun! Less()
   execute 'new'
   wincmd j
   execute 'silent! 1,1g/List of/d'
-  execute 'silent! 1,1g/Table/+1d'
+  execute 'silent! 1,1g/Table/+2d'
   execute 'silent! 1,2d'
   let line_length = max(map(getline(1, '$'), 'len(v:val)'))
   execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
   wincmd k
   execute 'silent! norm! P'
-  silent! $-1,$d
 
   wincmd j
   silent! g/^(\d\+ row/d | wincmd k | execute "silent! norm! P" | wincmd j
