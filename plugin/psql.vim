@@ -30,7 +30,7 @@ fun! Less()
   let line_length = max(map(getline(1, '$'), 'len(v:val)'))
   wincmd k
   execute 'silent! norm! P'
-  execute "%s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
+  execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
   execute "1"
   " resize upper window to two lines
   execute 'resize 2'
