@@ -1,5 +1,5 @@
 " :Less
-" turn vim into a pager for psql aligned results 
+" turn vim into a pager for psql aligned results
 fun! Less()
   autocmd BufEnter * let &titlestring = 'PSQL Pager'
   set title
@@ -27,6 +27,7 @@ fun! Less()
 
   wincmd j
   silent! g/^(\d\+ row/d | wincmd k | execute "silent! norm! P" | wincmd j
+  silent! $,$d
   norm! gg^
   wincmd k
   execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
@@ -35,20 +36,21 @@ fun! Less()
   execute 'resize 2'
 
   wincmd j
+  set cul
   "execute 'norm! 2'
   " hide statusline in lower window
   set laststatus=0
   " hide contents of upper statusline. editor note: do not remove trailing spaces in next line!
-  set statusline=\  
+  set statusline=\  " Whitespace at the end of this line matters
   " arrows do scrolling instead of moving
   nnoremap OC zL
   nnoremap OB 
   nnoremap OD zH
   nnoremap OA 
   nnoremap l zL
-  nnoremap j 
+  "nnoremap j 
   nnoremap h zH
-  nnoremap k 
+  "nnoremap k 
   nnoremap K 20
   nnoremap J 20
   nnoremap L zL
