@@ -55,18 +55,21 @@ fun! Less()
   nnoremap J 20
   nnoremap L zL
   nnoremap H zH
-  nnoremap u 20
-  nnoremap d 20
-  nnoremap U 20
-  nnoremap D 20
-  nnoremap G Gkk
+  "nnoremap u 20
+  "nnoremap d 20
+  "nnoremap U 20
+  "nnoremap D 20
+  "nnoremap G Gkk
+  noremap <tab> W
+  noremap <S-tab> B
   noremap <C-j> <C-w>j
   noremap <C-k> <C-w>k
   nnoremap <Space> <PageDown>
+  nnoremap <silent> <leader>h :noh<CR>
   " faster quit (I tend to forget about the upper panel)
   nmap q :qa!
   nmap Q :qa!
-  set noma
+  "set noma "Set not modifiable
   set fillchars=stl:-,stlnc:-
 endfun
 command! -nargs=0 Less call Less()
