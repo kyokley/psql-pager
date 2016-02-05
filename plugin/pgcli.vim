@@ -1,5 +1,5 @@
 " :Less
-" turn vim into a pager for psql aligned results 
+" turn vim into a pager for psql aligned results
 fun! Less()
   autocmd BufEnter * let &titlestring = 'PGCLI Pager'
   set title
@@ -14,20 +14,33 @@ fun! Less()
   set ignorecase
   set smartcase
   set nostartofline
+  set scrolloff=5
   "execute 'above split'
-  execute 'new'
+  %s/^[^a-zA-Z]//
+  g/\v^(-+\+)*-+[\+\|]$/d
+  let line_length = max(map(getline(1, '$'), 'len(v:val)'))
+  new
   wincmd j
+  execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
   "execute 'silent! 1,1g/List of/d'
   "execute 'silent! 1,1g/Table/+1d'
   execute 'silent! 1,1d'
-  execute 'silent! 1,1d'
+  "execute 'silent! 1,1d'
   wincmd k
   execute 'silent! norm! P'
   " resize upper window to one line; two lines are not needed because vim adds separating line
-  execute 'resize 1'
-  " switch to lower window and scroll 2 lines down 
+  execute 'resize 2'
+  " switch to lower window and scroll 2 lines down
   wincmd j
-  execute 'silent! 1,1d'
+  $,$d
+  norm! gg^
+  wincmd k
+  execute 'silent! norm! P'
+  execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
+  g/^\s\+$/d
+  wincmd j
+  set cul
+  "execute 'silent! 1,1d'
   "execute 'norm! 2'
   " hide statusline in lower window
   set laststatus=0
