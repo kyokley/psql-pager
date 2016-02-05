@@ -5,6 +5,7 @@ fun! Less()
   set title
   set nocompatible
   set nowrap
+  set nowrapscan
   set scrollopt=hor
   set scrollbind
   set nonumber
@@ -31,32 +32,35 @@ fun! Less()
   " hide statusline in lower window
   set laststatus=0
   " hide contents of upper statusline. editor note: do not remove trailing spaces in next line!
-  set statusline=\  
+  set statusline=\  " Whitespace at the end of this line matters
   " arrows do scrolling instead of moving
   nnoremap OC zL
   nnoremap OB 
   nnoremap OD zH
   nnoremap OA 
   nnoremap l zL
-  nnoremap j 
+  "nnoremap j 
   nnoremap h zH
-  nnoremap k 
+  "nnoremap k 
   nnoremap K 20
   nnoremap J 20
   nnoremap L zL
   nnoremap H zH
-  nnoremap u 20
-  nnoremap d 20
-  nnoremap U 20
-  nnoremap D 20
-  nnoremap G Gkk
+  "nnoremap u 20
+  "nnoremap d 20
+  "nnoremap U 20
+  "nnoremap D 20
+  "nnoremap G Gkk
+  noremap <tab> W
+  noremap <S-tab> B
   noremap <C-j> <C-w>j
   noremap <C-k> <C-w>k
   nnoremap <Space> <PageDown>
+  nnoremap <silent> <leader>h :noh<CR>
   " faster quit (I tend to forget about the upper panel)
   nmap q :qa!
   nmap Q :qa!
-  set noma
+  "set noma "Set not modifiable
   set fillchars=stl:-,stlnc:-
 endfun
 command! -nargs=0 Less call Less()

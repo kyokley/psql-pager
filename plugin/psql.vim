@@ -31,6 +31,8 @@ fun! Less()
   norm! gg^
   wincmd k
   execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
+  $,$d
+  g/\v^(-+\+)*-+$/d
   norm! gg^
   " resize upper window to two lines
   execute 'resize 2'
