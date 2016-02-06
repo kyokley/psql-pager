@@ -16,8 +16,8 @@ fun! Less()
   set nostartofline
   set scrolloff=5
   "execute 'above split'
-  %s/^[^a-zA-Z]//
-  g/\v^(-+\+)*-+[\+\|]$/d
+  silent! %s/^[^a-zA-Z]//
+  silent! g/\v^(-+\+)*-+[\+\|]$/d
   let line_length = max(map(getline(1, '$'), 'len(v:val)'))
   new
   wincmd j
@@ -28,16 +28,17 @@ fun! Less()
   "execute 'silent! 1,1d'
   wincmd k
   execute 'silent! norm! P'
-  " resize upper window to one line; two lines are not needed because vim adds separating line
-  execute 'resize 2'
   " switch to lower window and scroll 2 lines down
   wincmd j
-  $,$d
+  silent! $,$d
   norm! gg^
   wincmd k
   execute 'silent! norm! P'
   execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
-  g/^\s\+$/d
+  silent! g/^\s\+$/d
+
+  " resize upper window to one line; two lines are not needed because vim adds separating line
+  execute 'resize ' . line('$')
   wincmd j
   set cul
   "execute 'silent! 1,1d'
