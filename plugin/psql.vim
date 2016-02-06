@@ -15,18 +15,16 @@ fun! Less()
   set nostartofline
   set scrolloff=5
   if search('RECORD', 'nw') != 1
-      new
-      wincmd j
       let line_length = max(map(getline(1, '$'), 'len(v:val)'))
       execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
 
       if search('List of', 'nw') == 1 || search('Table', 'nw') == 1
-          1,3d p
+          silent! 1,3d p
       else
-          1,2d p
+          silent! 1,2d p
       endif
 
-      wincmd k
+      new
       silent! norm! "pP
 
       wincmd j
