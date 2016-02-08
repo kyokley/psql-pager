@@ -14,31 +14,36 @@ fun! Less()
   set smartcase
   set nostartofline
   set scrolloff=5
-  "execute 'above split'
-  execute 'new'
-  wincmd j
-  execute 'silent! 1,1g/List of/d'
-  execute 'silent! 1,1g/Table/+2d'
-  execute 'silent! 1,2d'
-  let line_length = max(map(getline(1, '$'), 'len(v:val)'))
-  execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
-  wincmd k
-  execute 'silent! norm! P'
+  if search('RECORD', 'nw') != 1
+      let line_length = max(map(getline(1, '$'), 'len(v:val)'))
+      execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
 
-  wincmd j
-  silent! g/^(\d\+ row/d | wincmd k | execute "silent! norm! P" | wincmd j
-  silent! $,$d
-  norm! gg^
-  wincmd k
-  execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
-  $,$d
-  g/\v^(-+\+)*-+$/d
-  norm! gg^
-  " resize upper window to two lines
-  execute 'resize 2'
+      if search('List of', 'nw') == 1 || search('Table', 'nw') == 1
+          silent! 1,3d p
+      else
+          silent! 1,2d p
+      endif
 
-  wincmd j
-  set cul
+      new
+      silent! norm! "pP
+
+      wincmd j
+      silent! g/^(\d\+ row/d | wincmd k | execute "silent! norm! P" | wincmd j
+      silent! g/\v^\s*$/d
+      norm! gg^
+      wincmd k
+      execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
+      silent! g/\v^\s*$/d
+      silent! g/\v^(-+\+)*-+\s*$/d
+      norm! gg^
+      " resize upper window
+      execute 'resize ' . line('$')
+      wincmd j
+      set cul
+  else
+      nnoremap j 
+      nnoremap k 
+  endif
   "execute 'norm! 2'
   " hide statusline in lower window
   set laststatus=0
@@ -50,9 +55,7 @@ fun! Less()
   nnoremap OD zH
   nnoremap OA 
   nnoremap l zL
-  "nnoremap j 
   nnoremap h zH
-  "nnoremap k 
   nnoremap K 20
   nnoremap J 20
   nnoremap L zL
