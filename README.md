@@ -10,3 +10,10 @@ if [ -e ~/.vim/bundle/vim-psql-pager/vimpsqlpager ]; then
   alias psql='PAGER=~/.vim/bundle/vim-psql-pager/vimpsqlpager psql';
 fi
 ```
+and for pgcli,
+
+```bash
+if [ -e ~/.vim/bundle/vim-psql-pager/vimpgclipager ]; then
+  alias pgcli='PAGER=~/.vim/bundle/vim-psql-pager/vimpgclipager pgcli';
+fi
+```
