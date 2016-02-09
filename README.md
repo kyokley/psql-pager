@@ -3,8 +3,12 @@
 A pager for psql built on vim.
 
 ## Installation
-Assuming you've installed your vim directory at ~/.vim and use pathogen, installing the pager should be as simple as adding the following to your bashrc
+Unfortunately, because I'm using hardcoded paths, the pager is expected to be installed in a dir at ~/.vim/bundle/vim-psql-pager. You can clone this repo to that folder by issuing:
+```
+git clone https://github.com/kyokley/vim-psql-pager.git ~/.vim/bundle/vim-psql-pager
+```
 
+Next, add the following lines to your .bashrc
 ```bash
 if [ -e ~/.vim/bundle/vim-psql-pager/vimpsqlpager ]; then
   alias psql='PAGER=~/.vim/bundle/vim-psql-pager/vimpsqlpager psql';
