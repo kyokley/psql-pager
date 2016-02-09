@@ -3,7 +3,7 @@
 A pager for psql built on vim.
 
 ## Installation
-Unfortunately, because I'm using hardcoded paths, the pager is expected to be installed in a dir at ~/.vim/bundle/vim-psql-pager. You can clone this repo to that folder by issuing:
+Unfortunately, because I'm using hardcoded paths, the pager is expected to be installed in a directory at ~/.vim/bundle/vim-psql-pager. You can clone this repo to that folder by issuing:
 ```
 git clone https://github.com/kyokley/vim-psql-pager.git ~/.vim/bundle/vim-psql-pager
 ```
