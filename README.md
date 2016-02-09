@@ -56,3 +56,6 @@ Q -> Quit
 ```
 
 Everything else remains the same. That means you're still able to leverage standard vim commands. For example, in result sets that have many columns, I find it useful to be able to jump to a specific column. This can be done by moving into the header split and searching for the column name. Since the splits are scrollbinded, the data will shift as well.
+
+## A note about NeoVim
+Currently, NeoVim handles input from stdin slightly different than Vim does. I haven't looked into it very much but the tl;dr of the situation is that NeoVim is unsupported. Since I personally use NeoVim, the way I get around this is by setting the linux alternative for vi to use regular vim (the call to vim inside the pager actually uses "vi" which is why this works).
