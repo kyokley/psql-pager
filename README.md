@@ -60,6 +60,9 @@ Everything else remains the same. That means you're still able to leverage stand
 ## A note about NeoVim
 Currently, NeoVim handles input from stdin slightly different than Vim does. I haven't looked into it very much but the tl;dr of the situation is that NeoVim is unsupported. Since I personally use NeoVim, the way I get around this is by setting the linux alternative for vi to use regular vim (the call to vim inside the pager actually uses "vi" which is why this works).
 
+## Acknowledgements
+This pager is based on filiprem's answer to the [this](http://unix.stackexchange.com/a/27840) StackExchange question.
+
 ## TODO
  - Streamline installation process
  - Remove hardcoded paths
