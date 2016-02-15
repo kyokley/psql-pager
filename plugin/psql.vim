@@ -1,5 +1,35 @@
-" :Less
-" turn vim into a pager for psql aligned results
+" Turn vim into a pager for psql aligned results
+function WriteHeader()
+    wincmd j
+    if search('RECORD', 'nw') != 1
+        let g:current_line = line('.')
+        wincmd k
+        silent! 2,2y p
+        wincmd j
+        0put p
+    endif
+endfunction
+
+function! RemoveHeader()
+    wincmd j
+    if search('RECORD', 'nw') != 1
+        0d
+        exec 'norm ' . g:current_line . 'gg'
+    endif
+endfunction
+
+function WriteCSV(name)
+    wincmd j
+    if search('RECORD', 'nw') != 1
+        undojoin | call WriteHeader()
+        undojoin | %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+        undojoin | %s/\v(^\s+|\s+$)//g
+        execute 'noa w! ' . a:name
+        undo
+        "RemoveHeader()
+    endif
+endfunction
+
 fun! Less()
   autocmd BufEnter * let &titlestring = 'PSQL Pager'
   set title
@@ -76,5 +106,8 @@ fun! Less()
   nmap Q :qa!
   "set noma "Set not modifiable
   set fillchars=stl:-,stlnc:-
+
+  autocmd BufWritePre * call WriteHeader()
+  autocmd BufWritePost * call RemoveHeader()
 endfun
 command! -nargs=0 Less call Less()
