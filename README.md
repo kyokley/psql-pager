@@ -68,3 +68,5 @@ This pager is based on filiprem's answer to the [this](http://unix.stackexchange
  - Remove hardcoded paths
  - Add screenshots to README
  - Add advanced usage section to README
+ - Write command should re-add header columns to output
+ - Add functions to convert output to CSV
