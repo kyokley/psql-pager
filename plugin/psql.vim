@@ -18,15 +18,16 @@ function! RemoveHeader()
     endif
 endfunction
 
-function WriteCSV(name)
+function ConvertToCSV()
     wincmd j
     if search('RECORD', 'nw') != 1
-        undojoin | call WriteHeader()
-        undojoin | %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+        %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
         undojoin | %s/\v(^\s+|\s+$)//g
-        execute 'noa w! ' . a:name
-        undo
-        "RemoveHeader()
+        wincmd k
+        norm G
+        s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+        undojoin | s/\v(^\s+|\s+$)//g
+        wincmd j
     endif
 endfunction
 
