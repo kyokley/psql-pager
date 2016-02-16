@@ -2,9 +2,15 @@
 function WriteHeader()
     wincmd j
     if search('RECORD', 'nw') != 1
-        let g:current_line = line('.')
+        let s:current_line = line('.')
         wincmd k
+        if exists("s:display_mode") && s:display_mode == 'CSV'
+            norm G
+            silent! s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+            undojoin | silent! s/\v(^\s+|\s+$)//g
+        endif
         silent! 2,2y p
+        norm u
         wincmd j
         0put p
     endif
@@ -14,20 +20,17 @@ function! RemoveHeader()
     wincmd j
     if search('RECORD', 'nw') != 1
         0d
-        exec 'norm ' . g:current_line . 'gg'
+        exec 'norm ' . s:current_line . 'gg'
     endif
 endfunction
 
 function ConvertToCSV()
     wincmd j
     if search('RECORD', 'nw') != 1
-        %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
-        undojoin | %s/\v(^\s+|\s+$)//g
-        wincmd k
-        norm G
-        s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
-        undojoin | s/\v(^\s+|\s+$)//g
-        wincmd j
+        let s:display_mode = 'CSV'
+        silent! %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+        undojoin | silent! %s/\v(^\s+|\s+$)//g
+        echom "Press u[ndo] to switch back to standard formatting"
     endif
 endfunction
 
