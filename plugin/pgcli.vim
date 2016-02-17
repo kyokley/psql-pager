@@ -1,5 +1,39 @@
-" :Less
-" turn vim into a pager for psql aligned results
+" Turn vim into a pager for psql aligned results
+function WriteHeader()
+    wincmd j
+    if search('RECORD', 'nw') != 1
+        let s:current_line = line('.')
+        wincmd k
+        if exists("s:display_mode") && s:display_mode == 'CSV'
+            norm G
+            silent! s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+            undojoin | silent! s/\v(^\s+|\s+$)//g
+        endif
+        silent! 2,2y p
+        norm u
+        wincmd j
+        0put p
+    endif
+endfunction
+
+function! RemoveHeader()
+    wincmd j
+    if search('RECORD', 'nw') != 1
+        0d
+        exec 'norm ' . s:current_line . 'gg'
+    endif
+endfunction
+
+function ConvertToCSV()
+    wincmd j
+    if search('RECORD', 'nw') != 1
+        let s:display_mode = 'CSV'
+        silent! %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
+        undojoin | silent! %s/\v(^\s+|\s+$)//g
+        echom "Press u[ndo] to switch back to standard formatting"
+    endif
+endfunction
+
 fun! Less()
   autocmd BufEnter * let &titlestring = 'PGCLI Pager'
   set title
@@ -57,6 +91,7 @@ fun! Less()
           qa!
       endif
   endif
+  "execute 'norm! 2'
   " hide statusline in lower window
   set laststatus=0
   " hide contents of upper statusline. editor note: do not remove trailing spaces in next line!
@@ -67,9 +102,7 @@ fun! Less()
   nnoremap OD zH
   nnoremap OA 
   nnoremap l zL
-  "nnoremap j 
   nnoremap h zH
-  "nnoremap k 
   nnoremap K 20
   nnoremap J 20
   nnoremap L zL
@@ -90,5 +123,8 @@ fun! Less()
   nmap Q :qa!
   "set noma "Set not modifiable
   set fillchars=stl:-,stlnc:-
+
+  autocmd BufWritePre * call WriteHeader()
+  autocmd BufWritePost * call RemoveHeader()
 endfun
 command! -nargs=0 Less call Less()
