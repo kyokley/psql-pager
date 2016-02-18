@@ -10,7 +10,6 @@ function WriteHeader()
             undojoin | silent! s/\v(^\s+|\s+$)//g
         endif
         silent! 2,2y p
-        norm u
         wincmd j
         0put p
     endif
