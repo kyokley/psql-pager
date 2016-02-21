@@ -3,23 +3,19 @@
 A pager for psql built on vim.
 
 ## Installation
-Unfortunately, because I'm using hardcoded paths, the pager is expected to be installed in a directory at ~/.vim/bundle/vim-psql-pager. You can clone this repo to that folder by issuing:
+After cloning this repo, simply run the following:
 ```
-git clone https://github.com/kyokley/vim-psql-pager.git ~/.vim/bundle/vim-psql-pager
+sudo ./install.py
 ```
 
 Next, add the following lines to your .bashrc
 ```bash
-if [ -e ~/.vim/bundle/vim-psql-pager/vimpsqlpager ]; then
-  alias psql='PAGER=~/.vim/bundle/vim-psql-pager/vimpsqlpager psql';
-fi
+alias psql='PAGER=vimpsqlpager psql';
 ```
 and for pgcli,
 
 ```bash
-if [ -e ~/.vim/bundle/vim-psql-pager/vimpgclipager ]; then
-  alias pgcli='PAGER=~/.vim/bundle/vim-psql-pager/vimpgclipager pgcli';
-fi
+alias pgcli='PAGER=vimpgclipager pgcli';
 ```
 ## How it works
 The process is fairly simple. I have created a series of vim commands that format the data in a way that gives the illusion of sticky header columns. This is achieved by creating a split with headers in the top area and the rest of the data in the bottom area.
@@ -64,9 +60,6 @@ Currently, NeoVim handles input from stdin slightly different than Vim does. I h
 This pager is based on filiprem's answer to the [this](http://unix.stackexchange.com/a/27840) StackExchange question.
 
 ## TODO
- - Streamline installation process
- - Remove hardcoded paths
  - Add screenshots to README
  - Add advanced usage section to README
- - Write command should re-add header columns to output
  - Add functions to convert output to CSV
