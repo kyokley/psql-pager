@@ -1,4 +1,0 @@
-#!/bin/bash
-what=-
-test "$@" && what="$@"
-exec vi -u NONE -S ~/.vim/bundle/vim-psql-pager/plugin/pgcli.vim -c Less $what
