@@ -4,7 +4,7 @@ A pager for psql built on vim.
 
 ## Installation
 After cloning this repo, simply run the following:
-```
+```bash
 sudo ./install.py
 ```
 
