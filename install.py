@@ -38,8 +38,8 @@ def main():
 Pager has been installed successfully to {executable_path}
 
 Be sure to add the following to your .bashrc (or similar):
-    alias psql='PAGER=vimpsqlpager psql';
-    alias pgcli='PAGER=vimpgclipager pgcli';
+    alias psql='PAGER=vimpsqlpager psql'
+    alias pgcli='PAGER=vimpgclipager pgcli'
     '''.format(executable_path=EXECUTABLE_PATH)
 
 if __name__ == '__main__':
