@@ -21,7 +21,7 @@ exec vi -u NONE -S {install_dir}/plugin/pgcli.vim -c Less $what
 def main():
     uid = os.getuid()
     if uid != 0:
-        sys.exit('ERROR: Installation must be executed as the root user')
+        sys.exit('ERROR: Installation must be executed as the root user\nTry running:\n\tsudo ./install.py')
 
     install_dir = os.getcwd()
     full_psql_path = os.path.join(EXECUTABLE_PATH, PSQL_FILENAME)
