@@ -40,12 +40,12 @@ fun! Less()
   "http://unencumberedbyfacts.com/2016/01/04/psql-vim-happy-face/
   syn region Heading start=/^ \l/ end=/[-+]\+$/
   syn match Border "|"
-  syn match IntVal " \d\+\(\n\| \)"
+  syn match IntVal "\(^\||\)\@<=\s\+\d\+\(\n\|\s\+|\)\@="
   syn match NullVal " NULL\(\n\| \)"
   syn match NegVal " -\d\+\(\n\| \)"
   syn match FloatVal " \d\+\.\d\+\(\n\| \)"
   syn match NegFloatVal " -\d\+\.\d\+\(\\n\| \)"
-  syn match DateTime "\d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}:\d\{2}\.[0-9-]\+\(\s\+\| \)"
+  syn match DateTime "\d\{4}-\d\{2}-\d\{2} \d\{2}:\d\{2}:\d\{2}\(\.[0-9-]\+\s\+\|\s\+\| \)"
   syn match TrueVal " t\(\n\| \)"
   syn match FalseVal " f\(\n\| \)"
    
