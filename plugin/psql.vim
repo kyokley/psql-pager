@@ -50,7 +50,6 @@ fun! Less()
   set nostartofline
   set scrolloff=5
   set ft=psql
-  syntax on
   if search('RECORD', 'nw') != 1
       let line_length = max(map(getline(1, '$'), 'len(v:val)'))
       execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
