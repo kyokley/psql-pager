@@ -10,7 +10,6 @@ function WriteHeader()
             undojoin | silent! s/\v(^\s+|\s+$)//g
         endif
         silent! 2,2y p
-        norm u
         wincmd j
         0put p
     endif
@@ -27,10 +26,12 @@ endfunction
 function ConvertToCSV()
     wincmd j
     if search('RECORD', 'nw') != 1
+        let s:current_line = line('.')
         let s:display_mode = 'CSV'
         silent! %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
         undojoin | silent! %s/\v(^\s+|\s+$)//g
         echom "Press u[ndo] to switch back to standard formatting"
+        exec 'norm ' . s:current_line . 'gg'
     endif
 endfunction
 
@@ -49,6 +50,7 @@ fun! Less()
   set smartcase
   set nostartofline
   set scrolloff=5
+  set ft=psql
   if search('RECORD', 'nw') != 1 && search('\v(-+\+)*-+[\+\|]$', 'nw') == 1 "Determining if the output even needs formatting
       " Trim fancy table formatting
       silent! %s/^[^a-zA-Z]//
