@@ -45,7 +45,7 @@ Ctrl-J -> Move to the data split
 Ctrl-K -> Move to the header split
 ```
 
-#### Syntax Highlighting
+#### EXPERIMENTAL: Syntax Highlighting
 ```
 :syntax on
 ```
