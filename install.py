@@ -9,13 +9,15 @@ EXECUTABLE_PATH = '/usr/bin'
 psql_script = '''#!/bin/bash
 what=-
 test "$@" && what="$@"
-exec vi -u NONE -S {install_dir}/plugin/psql.vim -c Less $what
+PLUGIN_DIR='{install_dir}/plugin'
+exec vi -u NONE -S $PLUGIN_DIR/psql.vim -c "let &runtimepath='$PLUGIN_DIR,' . &runtimepath" -c Less $what
 '''
 
 pgcli_script = '''#!/bin/bash
 what=-
 test "$@" && what="$@"
-exec vi -u NONE -S {install_dir}/plugin/pgcli.vim -c Less $what
+PLUGIN_DIR='{install_dir}/plugin'
+exec vi -u NONE -S $PLUGIN_DIR/pgcli.vim -c "let &runtimepath='$PLUGIN_DIR,' . &runtimepath" -c Less $what
 '''
 
 def main():
