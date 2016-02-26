@@ -45,6 +45,12 @@ Ctrl-J -> Move to the data split
 Ctrl-K -> Move to the header split
 ```
 
+#### Syntax Highlighting
+```
+:syntax on
+```
+I have added some syntax highlighting that can be applied to query results. **WARNING:** Applying highlighting can be extremely slow if there is a lot of data on the screen. It can be especially slow if the result contains a lot of columns. Also, it is worth noting that vim disables highlighting after a certain number of columns. This is set in the 'synmaxcol' variable (it defaults to 3000). View the vim help for more information.
+
 #### Exiting
 ```
 q -> Quit
