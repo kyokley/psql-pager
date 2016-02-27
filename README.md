@@ -2,6 +2,8 @@
 
 A pager for psql built on vim.
 
+![Screenshot](output.gif)
+
 ## Installation
 After cloning this repo, simply run the following:
 ```bash
