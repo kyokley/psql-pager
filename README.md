@@ -2,7 +2,7 @@
 
 A pager for psql built on vim.
 
-![Screenshot](output.gif)
+![Screenshot](output.gif?raw=true)
 
 ## Installation
 After cloning this repo, simply run the following:
