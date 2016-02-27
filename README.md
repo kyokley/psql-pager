@@ -4,6 +4,15 @@ A pager for psql built on vim.
 
 ![Screenshot](/../screenshots/screenshots/output.gif?raw=true)
 
+## Features
+- Sticky headers
+- Searching within results
+- Sorting
+- psql and pgcli support
+- Experimental highlighting (Read below about limitations)
+
+Since the pager is built using vim, most standard vim commands should be available. Any commands that have been remapped can be found below. Although knowledge of vim is not necessary to use the pager, it can help in understanding some of the more advanced features.
+
 ## Installation
 After cloning this repo, simply run the following:
 ```bash
@@ -41,6 +50,13 @@ Shift-Tab -> Move to the previous word
 Space -> PageDown
 ```
 
+#### Searching
+```
+/{pattern}<CR> -> Search for {pattern}
+n -> Move to next match
+N -> Move to previous match
+```
+
 #### Moving between splits
 ```
 Ctrl-J -> Move to the data split
@@ -68,6 +84,5 @@ Currently, NeoVim handles input from stdin slightly different than Vim does. I h
 This pager is based on filiprem's answer to the [this](http://unix.stackexchange.com/a/27840) StackExchange question.
 
 ## TODO
- - Add screenshots to README
  - Add advanced usage section to README
  - Add functions to convert output to CSV
