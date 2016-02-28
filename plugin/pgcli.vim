@@ -121,8 +121,8 @@ fun! Less()
   nnoremap <Space> <PageDown>
   nnoremap <silent> <leader>h :noh<CR>
   " faster quit (I tend to forget about the upper panel)
-  nmap q :qa!
-  nmap Q :qa!
+  nnoremap q :qa!
+  nnoremap Q :qa!
   "set noma "Set not modifiable
   set fillchars=stl:-,stlnc:-
 
