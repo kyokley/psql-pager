@@ -36,18 +36,22 @@ function ConvertToCSV()
 endfunction
 
 function SortByColumn(...) range
-    wincmd j
+    let current_pos = getpos('.')
+    exec 'norm ?|\|^'
     if exists('a:1')
         let sort_column = a:1
     else
         let sort_column = virtcol('.')
     endif
 
+    wincmd j
+
     if a:lastline > a:firstline
         exec a:firstline . ',' . a:lastline . 'sor /.*\%' . sort_column . 'v/'
     else
         exec 'sor /.*\%' . sort_column . 'v/'
     endif
+    call setpos('.', current_pos)
 endfunction
 
 fun! Less()
@@ -61,6 +65,7 @@ fun! Less()
   set nonumber
   set incsearch
   set hlsearch
+  set ignorecase
   set smartcase
   set nostartofline
   set scrolloff=5
