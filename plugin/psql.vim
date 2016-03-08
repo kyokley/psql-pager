@@ -35,6 +35,21 @@ function ConvertToCSV()
     endif
 endfunction
 
+function SortByColumn(...) range
+    wincmd j
+    if exists('a:1')
+        let sort_column = a:1
+    else
+        let sort_column = virtcol('.')
+    endif
+
+    if a:lastline > a:firstline
+        exec a:firstline . ',' . a:lastline . 'sor /.*\%' . sort_column . 'v/'
+    else
+        exec 'sor /.*\%' . sort_column . 'v/'
+    endif
+endfunction
+
 fun! Less()
   autocmd BufEnter * let &titlestring = 'PSQL Pager'
   set title
@@ -92,8 +107,8 @@ fun! Less()
   nnoremap OA 
   nnoremap l zL
   nnoremap h zH
-  nnoremap K 20
-  nnoremap J 20
+  noremap K 20
+  noremap J 20
   nnoremap L zL
   nnoremap H zH
   "nnoremap u 20
