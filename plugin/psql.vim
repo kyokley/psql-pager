@@ -35,21 +35,27 @@ function ConvertToCSV()
     endif
 endfunction
 
-function SortByColumn(...) range
-    let current_pos = getpos('.')
-    exec 'norm ?|\|^'
+function SortByColumn(...)
     if exists('a:1')
-        let sort_column = a:1
+        let is_num = a:1
+    else
+        let is_num = 0
+    endif
+
+    let current_pos = getpos('.')
+    if exists('a:2')
+        let sort_column = a:2
     else
         let sort_column = virtcol('.')
+        silent! exec 'norm ?|\|^'
     endif
 
     wincmd j
 
-    if a:lastline > a:firstline
-        exec a:firstline . ',' . a:lastline . 'sor /.*\%' . sort_column . 'v/'
-    else
+    if is_num == 0
         exec 'sor /.*\%' . sort_column . 'v/'
+    else
+        exec 'sor /.*\%' . sort_column . 'v/ u'
     endif
     call setpos('.', current_pos)
 endfunction
@@ -70,6 +76,8 @@ fun! Less()
   set nostartofline
   set scrolloff=5
   set ft=psql
+  command! SortCol call SortByColumn(0)
+  command! SortColNum call SortByColumn(1)
   if search('RECORD', 'nw') != 1
       let line_length = max(map(getline(1, '$'), 'len(v:val)'))
       execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
