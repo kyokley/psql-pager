@@ -59,16 +59,9 @@ N -> Move to previous match
 
 #### Sorting
 ```
-:[range]call SortByColumn([column])
+:SortCol
 ```
-I have added a convenience function capable of sorting the output based on a given column. If a range is not given, the entire buffer will be used. If a column is not specified, the sort will default to the column under the cursor. Therefore, the simplest usage would be as follows:
-```
-:call SortByColumn()
-```
-But, this allows you to sort on just a subset of data. For example, to sort the first 10 lines of a buffer based on the data appearing after the 44th column, you could do:
-```
-:1,10call SortByColumn(44)
-```
+I have added a convenience function capable of sorting the output based on a given column. The sort uses the column that the cursor is currently in.
 
 #### Moving between splits
 ```

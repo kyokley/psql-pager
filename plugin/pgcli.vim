@@ -35,22 +35,18 @@ function ConvertToCSV()
     endif
 endfunction
 
-function SortByColumn(...) range
+function SortByColumn(...)
     let current_pos = getpos('.')
-    exec 'norm ?|\|^'
     if exists('a:1')
         let sort_column = a:1
     else
+        silent! exec 'norm ?|\|^'
         let sort_column = virtcol('.')
     endif
 
     wincmd j
 
-    if a:lastline > a:firstline
-        exec a:firstline . ',' . a:lastline . 'sor /.*\%' . sort_column . 'v/'
-    else
-        exec 'sor /.*\%' . sort_column . 'v/'
-    endif
+    exec 'sor /.*\%' . sort_column . 'v/'
     call setpos('.', current_pos)
 endfunction
 
@@ -70,6 +66,8 @@ fun! Less()
   set nostartofline
   set scrolloff=5
   set ft=psql
+  command! SortCol call SortByColumn()
+
   if search('RECORD', 'nw') != 1 && search('\v(-+\+)*-+[\+\|]$', 'nw') == 1 "Determining if the output even needs formatting
       " Trim fancy table formatting
       silent! %s/^[^a-zA-Z]//
