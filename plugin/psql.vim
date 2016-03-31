@@ -65,6 +65,7 @@ fun! Less()
   set smartcase
   set nostartofline
   set scrolloff=5
+  set noswapfile
   set ft=psql
 
   command! SortCol call SortByColumn()
