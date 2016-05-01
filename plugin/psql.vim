@@ -30,7 +30,7 @@ function ConvertToCSV()
         let s:display_mode = 'CSV'
         silent! %s/\v\s+\|\s+([^\|]{-})\ze\s+(\||$)\@=/,\1/g
         undojoin | silent! %s/\v(^\s+|\s+$)//g
-        echom "Press u[ndo] to switch back to standard formatting"
+        echom "Execute :u[ndo]<CR> to switch back to standard formatting"
         exec 'norm ' . s:current_line . 'gg'
     endif
 endfunction
@@ -70,7 +70,7 @@ fun! Less()
 
   command! SortCol call SortByColumn()
 
-  if search('RECORD', 'nw') != 1
+  if search('RECORD', 'nw') != 1 && search('^General', 'nw') != 1
       let line_length = max(map(getline(1, '$'), 'len(v:val)'))
       execute "silent! %s/$/\\=repeat(' '," . line_length . "- virtcol('$'))"
 
@@ -116,11 +116,11 @@ fun! Less()
   noremap J 20
   nnoremap L zL
   nnoremap H zH
-  "nnoremap u 20
-  "nnoremap d 20
-  "nnoremap U 20
-  "nnoremap D 20
-  "nnoremap G Gkk
+  nnoremap u 20
+  nnoremap d 20
+  nnoremap U 20
+  nnoremap D 20
+  nnoremap G Gkk
   noremap <tab> W
   noremap <S-tab> B
   noremap <C-j> <C-w>j
