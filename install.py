@@ -42,9 +42,6 @@ Pager has been installed successfully to {executable_path}
 Be sure to add the following to your .bashrc (or similar):
     alias psql='PAGER=vimpsqlpager psql'
     alias pgcli='PAGER=vimpgclipager pgcli'
-
-Or, even better, add the following to your .psqlrc
-    \pset pager {executable_path}/vimpsqlpager
     '''.format(executable_path=EXECUTABLE_PATH)
 
 if __name__ == '__main__':
