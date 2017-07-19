@@ -131,6 +131,18 @@ fun! Less()
   nnoremap q :qa!
   nnoremap Q :qa!
   "set noma "Set not modifiable
+  nnoremap i <nop>
+  nnoremap I <nop>
+  nnoremap a <nop>
+  nnoremap A <nop>
+  nnoremap s <nop>
+  nnoremap S <nop>
+  nnoremap o <nop>
+  nnoremap O <nop>
+  nnoremap c <nop>
+  nnoremap C <nop>
+  nnoremap r <nop>
+  nnoremap R <nop>
   set fillchars=stl:-,stlnc:-
 
   autocmd BufWritePre * call WriteHeader()
