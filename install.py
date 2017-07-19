@@ -9,14 +9,14 @@ EXECUTABLE_PATH = '/usr/bin'
 psql_script = '''#!/bin/bash
 what=-
 test "$@" && what="$@"
-PLUGIN_DIR='{install_dir}/vim-psql-pager/plugin'
+PLUGIN_DIR='{install_dir}/plugin'
 exec vi -u NONE -S $PLUGIN_DIR/psql.vim -c "let &runtimepath='$PLUGIN_DIR,' . &runtimepath" -c Less $what
 '''
 
 pgcli_script = '''#!/bin/bash
 what=-
 test "$@" && what="$@"
-PLUGIN_DIR='{install_dir}/vim-psql-pager/plugin'
+PLUGIN_DIR='{install_dir}/plugin'
 exec vi -u NONE -S $PLUGIN_DIR/pgcli.vim -c "let &runtimepath='$PLUGIN_DIR,' . &runtimepath" -c Less $what
 '''
 
@@ -25,7 +25,7 @@ def main():
     if uid != 0:
         sys.exit('ERROR: Installation must be executed as the root user\nTry running:\n\tsudo ./install.py')
 
-    install_dir = os.getcwd()
+    install_dir = os.path.dirname(os.path.abspath(__file__))
     full_psql_path = os.path.join(EXECUTABLE_PATH, PSQL_FILENAME)
     with open(full_psql_path, 'w') as f:
         f.write(psql_script.format(install_dir=install_dir))
