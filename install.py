@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import os, sys
+import os
+import sys
 
 PSQL_FILENAME = 'vimpsqlpager'
 PGCLI_FILENAME = 'vimpgclipager'
