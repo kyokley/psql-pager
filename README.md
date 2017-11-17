@@ -4,6 +4,8 @@ A pager for psql built on vim.
 
 ![Screenshot](/../screenshots/screenshots/output.gif?raw=true)
 
+**NOTE:** Knowledge of vim is not required to use this pager! If you can get around less you should feel comfortable here.
+
 ## Features
 - Sticky headers
 - Searching within results
