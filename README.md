@@ -1,10 +1,10 @@
-# VIM PSQL Pager
+# PSQL Pager
 
-A pager for psql built on vim.
+An enhanced pager for psql output
 
 ![Screenshot](/../screenshots/screenshots/output.gif?raw=true)
 
-**NOTE:** Knowledge of vim is not required to use this pager! If you can get around *less* you should feel comfortable here.
+**NOTE:** This pager is built on vim. However, knowledge of vim is not required to use this pager! If you can get around *less* you should feel comfortable here.
 
 ## Features
 - Sticky headers
@@ -58,7 +58,7 @@ pgcli postgresql://postgres@localhost:5432
 The process is fairly simple. I have created a series of vim commands that format the data in a way that gives the illusion of sticky header columns. This is achieved by creating a split with headers in the top area and the rest of the data in the bottom area.
 
 ## Commands
-When the pager first starts, it overrides the user's vimrc and replaces it with pager specific commands. I tried to build off the default vim commands so if you're familiar with those, things should just come naturally to you.
+I tried to map keys similar to what would be expected in *less*.
 
 #### Moving around
 ```
@@ -67,6 +67,11 @@ j -> Move the cursor down one line
 k -> Move the cursor up one line
 l -> Scroll right
 
+Arrow Left -> Scroll left
+Arrow Down -> Scroll screen down
+Arrow Up -> Scroll screen up
+Arrow Right -> Scroll screen right
+
 Shift-J -> Jump down
 Shift-K -> Jump up
 
@@ -74,6 +79,9 @@ Tab -> Move to the next word
 Shift-Tab -> Move to the previous word
 
 Space -> PageDown
+
+u -> PageUp
+d -> PageDown
 ```
 
 #### Searching
@@ -89,9 +97,9 @@ N -> Move to previous match
 ```
 I have added a convenience function capable of sorting the output based on a given column. The sort uses the column that the cursor is currently in.
 
-#### Moving between splits
+#### Moving between header and body
 ```
-Ctrl-J -> Move to the data split
+Ctrl-J -> Move to the body split
 Ctrl-K -> Move to the header split
 ```
 
@@ -115,3 +123,4 @@ This pager is based on filiprem's answer to [this](http://unix.stackexchange.com
 ## TODO
  - Add advanced usage section to README
  - Add functions to convert output to CSV
+ - Define psql history file for mounting in host
