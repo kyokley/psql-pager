@@ -29,20 +29,26 @@ docker run --rm -it --network=host kyokley/pgcli postgresql://postgres@localhost
 Since those commands are a little wordy, it can be useful to alias them in your bashrc
 ```
 psql() {
-    docker run \
-        --rm -it \
-        --network=host \
-        kyokley/psql:latest \
-        "$@"
-       }
+docker run \
+    --rm -it \
+    --net=host \
+    -e "PGTZ=America/Chicago" \
+    -e "PSQL_HISTORY=/root/.psql_history" \
+    -v "$HOME/.psql_history:/root/.psql_history" \
+    kyokley/psql \
+    "$@"
+}
 
 pgcli() {
-    docker run \
-        --rm -it \
-        --network=host \
-        kyokley/pgcli:latest \
-        "$@"
-       }
+docker run \
+    --rm -it \
+    --net=host \
+    -e "PGTZ=America/Chicago" \
+    -e "PSQL_HISTORY=/root/.psql_history" \
+    -v "$HOME/.psql_history:/root/.psql_history" \
+    kyokley/pgcli \
+    "$@"
+}
 ```
 Now the commands can be called just as you'd expect.
 For psql:
