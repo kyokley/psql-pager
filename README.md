@@ -123,6 +123,9 @@ Q -> Quit
 
 Everything else remains the same. That means you're still able to leverage standard vim commands. For example, in result sets that have many columns, I find it useful to be able to jump to a specific column. This can be done by moving into the header split and searching for the column name. Since the splits are scrollbinded, the data will shift as well.
 
+#### Known Issues
+There's sometimes an issue with the header and body scrolling getting out of sync when data is initially loaded. This can easily be fixed by scrolling left and right with the arrow keys.
+
 ## Acknowledgements
 This pager is based on filiprem's answer to [this](http://unix.stackexchange.com/a/27840) StackExchange question.
 
