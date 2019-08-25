@@ -7,6 +7,7 @@ ENV LC_ALL en_US.UTF-8
 ENV PAGER /pager/psql.sh
 RUN apk update && apk add --no-cachce vim
 
-COPY . /pager
+COPY ./common.vim /root/config/common.vim
+COPY ./psql /pager
 
 ENTRYPOINT ["psql"]

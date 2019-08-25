@@ -13,6 +13,7 @@ RUN apk update && apk add --no-cache vim \
 
 RUN pip install --upgrade pip pgcli
 
-COPY . /pager
+COPY ./common.vim /root/config/common.vim
+COPY ./pgcli /pager
 
 ENTRYPOINT ["pgcli"]
