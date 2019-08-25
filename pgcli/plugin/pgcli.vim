@@ -111,6 +111,10 @@ fun! Less()
           qa!
       endif
   endif
+
+  " Move to the beginning of the line
+  norm! ^
+
   "execute 'norm! 2'
   " hide statusline in lower window
   set laststatus=0

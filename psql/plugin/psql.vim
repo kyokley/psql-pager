@@ -100,6 +100,10 @@ fun! Less()
       nnoremap j 
       nnoremap k 
   endif
+
+  " Move to the beginning of the line
+  norm! ^
+
   "execute 'norm! 2'
   " hide statusline in lower window
   set laststatus=0
