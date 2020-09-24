@@ -10,4 +10,6 @@ RUN apk update && apk add --no-cache vim
 COPY ./common.vim /root/config/common.vim
 COPY ./psql /pager
 
+WORKDIR /workspace
+
 ENTRYPOINT ["psql"]

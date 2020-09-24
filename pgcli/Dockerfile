@@ -16,4 +16,6 @@ RUN pip install --upgrade pip pgcli
 COPY ./common.vim /root/config/common.vim
 COPY ./pgcli /pager
 
+WORKDIR /workspace
+
 ENTRYPOINT ["pgcli"]
