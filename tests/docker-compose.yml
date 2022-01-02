@@ -1,0 +1,23 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - .:/app
+
+  pgcli:
+    build:
+      context: ../pgcli
+      dockerfile: ../pgcli/Dockerfile
+    depends_on:
+      - postgres
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/test
+    command:
+      /bin/bash -c 'pgcli'
