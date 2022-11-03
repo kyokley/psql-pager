@@ -10,9 +10,7 @@ services:
       - .:/app
 
   pgcli:
-    build:
-      context: ../pgcli
-      dockerfile: ../pgcli/Dockerfile
+    image: kyokley/pgcli
     depends_on:
       - postgres
     tty: true
