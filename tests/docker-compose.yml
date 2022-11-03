@@ -13,9 +13,7 @@ services:
     image: kyokley/pgcli
     depends_on:
       - postgres
-    tty: true
-    stdin_open: true
     volumes:
       - .:/test
-    command:
-      /bin/bash -c 'pgcli'
+    entrypoint:
+      /bin/sh -c 'echo  "select * from accounts;" | pgcli -h postgres -U postgres'
