@@ -13,7 +13,12 @@ services:
     image: kyokley/pgcli
     depends_on:
       - postgres
-    volumes:
-      - .:/test
     entrypoint:
-      /bin/sh -c 'echo  "select * from accounts;" | pgcli -h postgres -U postgres'
+      /bin/sh -c 'tail -f /dev/null'
+
+  psql:
+    image: kyokley/psql
+    depends_on:
+      - postgres
+    entrypoint:
+      /bin/sh -c 'tail -f /dev/null'
