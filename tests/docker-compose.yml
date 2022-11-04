@@ -13,8 +13,6 @@ services:
     image: kyokley/pgcli
     depends_on:
       - postgres
-    tty: true
-    stdin_open: true
     entrypoint:
       /bin/sh -c 'tail -f /dev/null'
 
@@ -22,7 +20,5 @@ services:
     image: kyokley/psql
     depends_on:
       - postgres
-    tty: true
-    stdin_open: true
     entrypoint:
       /bin/sh -c 'tail -f /dev/null'

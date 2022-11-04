@@ -15,17 +15,17 @@ publish: build
 test-setup:
 	docker-compose -f tests/docker-compose.yml up -d postgres
 	sleep 1
-	docker-compose -f tests/docker-compose.yml exec postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
+	docker-compose -f tests/docker-compose.yml exec -T postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
 
 test-down:
 	docker-compose -f tests/docker-compose.yml down -v
 
 test-pgcli: build-pgcli
 	docker-compose -f tests/docker-compose.yml up -d pgcli
-	docker-compose -f tests/docker-compose.yml exec pgcli /bin/sh -c 'echo  "SELECT * FROM accounts;" | pgcli -h postgres -U postgres'
+	docker-compose -f tests/docker-compose.yml exec -T pgcli /bin/sh -c 'echo  "SELECT * FROM accounts;" | pgcli -h postgres -U postgres'
 
 test-psql: build-psql
 	docker-compose -f tests/docker-compose.yml up -d psql
-	docker-compose -f tests/docker-compose.yml exec psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
+	docker-compose -f tests/docker-compose.yml exec -T psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
 
 tests: test-setup test-psql test-pgcli test-down
