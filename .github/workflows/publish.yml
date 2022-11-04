@@ -1,9 +1,9 @@
-name: 'build images'
+name: 'publish images'
 
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   docker:
@@ -20,6 +20,9 @@ jobs:
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@master
+
+      - name: Run tests
+        run: make tests
 
       - name: Login to DockerHub
         if: github.event_name != 'pull_request'

@@ -28,4 +28,4 @@ test-psql: build-psql
 	docker-compose -f tests/docker-compose.yml up -d psql
 	docker-compose -f tests/docker-compose.yml exec psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
 
-test: test-setup test-psql test-pgcli test-down
+tests: test-setup test-psql test-pgcli test-down
