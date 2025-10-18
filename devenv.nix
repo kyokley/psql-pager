@@ -49,12 +49,11 @@
       docker compose -f tests/docker-compose.yml exec -T postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
     '';
     test-down.exec = ''
-      docker compose -f tests/docker-compose.yml down -v
+      docker compose -f tests/docker-compose.yml down -v --remove-orphans
     '';
     test-pgcli.exec = ''
       build-pgcli
-      docker compose -f tests/docker-compose.yml up -d pgcli
-      docker compose -f tests/docker-compose.yml exec -T pgcli /bin/sh -c 'echo  "SELECT * FROM accounts;" | pgcli -h postgres -U postgres'
+      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh pgcli -c 'echo  "SELECT * FROM accounts;" | uv run pgcli -h postgres -U postgres'
     '';
     test-psql.exec = ''
       build-psql
@@ -62,6 +61,7 @@
       docker compose -f tests/docker-compose.yml exec -T psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
     '';
     tests.exec = ''
+      set -e
       test-setup
       test-psql
       test-pgcli

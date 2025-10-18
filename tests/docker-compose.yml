@@ -12,8 +12,6 @@ services:
     image: kyokley/pgcli
     depends_on:
       - postgres
-    entrypoint:
-      /bin/sh -c 'tail -f /dev/null'
 
   psql:
     image: kyokley/psql

@@ -11,14 +11,16 @@ RUN apk update && apk add --no-cache vim \
         musl-dev \
         gcc
 
-RUN pip install --upgrade pip pgcli
+RUN pip install --upgrade pip uv
+
+WORKDIR /workspace
+COPY ./pyproject.toml ./uv.lock /workspace/
+RUN uv sync --no-install-project
 
 COPY ./common.vim /root/config/common.vim
 COPY ./pgcli /pager
 
-WORKDIR /workspace
-
-ENTRYPOINT ["pgcli"]
+ENTRYPOINT ["uv", "run", "pgcli"]
 
 FROM postgres:alpine AS psql
 
