@@ -6,7 +6,7 @@
   };
 
   # https://devenv.sh/packages/
-  packages = [];
+  packages = [pkgs.docker];
 
   # https://devenv.sh/languages/
   languages = {
@@ -38,23 +38,28 @@
       build-pgcli
       build-psql
     '';
+    publish.exec = ''
+      build
+      docker push kyokley/pgcli
+      docker push kyokley/psql
+    '';
     test-setup.exec = ''
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml up -d postgres
+      docker compose -f tests/docker-compose.yml up -d postgres
       sleep 1
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml exec -T postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
+      docker compose -f tests/docker-compose.yml exec -T postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
     '';
     test-down.exec = ''
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml down -v
+      docker compose -f tests/docker-compose.yml down -v
     '';
     test-pgcli.exec = ''
       build-pgcli
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml up -d pgcli
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml exec -T pgcli /bin/sh -c 'echo  "SELECT * FROM accounts;" | pgcli -h postgres -U postgres'
+      docker compose -f tests/docker-compose.yml up -d pgcli
+      docker compose -f tests/docker-compose.yml exec -T pgcli /bin/sh -c 'echo  "SELECT * FROM accounts;" | pgcli -h postgres -U postgres'
     '';
     test-psql.exec = ''
       build-psql
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml up -d psql
-      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml exec -T psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
+      docker compose -f tests/docker-compose.yml up -d psql
+      docker compose -f tests/docker-compose.yml exec -T psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
     '';
     tests.exec = ''
       test-setup
