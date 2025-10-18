@@ -1,21 +1,8 @@
 { pkgs, lib, config, inputs, ... }:
-let
-  set-env = ''
-    : ''${USE_HOST_NET:=0}
-    if [ $USE_HOST_NET -eq 1 ]
-    then
-      DOCKER_BUILD_ARGS="--network=host"
-    else
-      DOCKER_BUILD_ARGS=""
-    fi
-
-    export DOCKER_BUILD_ARGS
-  '';
-in
 {
   # https://devenv.sh/basics/
   env = {
-    USE_HOST_NET = lib.mkDefault 0;
+    DOCKER_BUILD_ARGS = lib.mkDefault "";
   };
 
   # https://devenv.sh/packages/
@@ -41,16 +28,47 @@ in
 
   # https://devenv.sh/scripts/
   scripts = {
-    hello.exec = ''
-      echo Welcome to
-      ${pkgs.figlet}/bin/figlet -f slant 'PSQL Pager' | ${pkgs.lolcat}/bin/lolcat
-      echo
+    build-pgcli.exec = ''
+      docker build ''${DOCKER_BUILD_ARGS} -t kyokley/pgcli --target=pgcli .
+    '';
+    build-psql.exec = ''
+      docker build ''${DOCKER_BUILD_ARGS} -t kyokley/psql --target=psql .
+    '';
+    build.exec = ''
+      build-pgcli
+      build-psql
+    '';
+    test-setup.exec = ''
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml up -d postgres
+      sleep 1
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml exec -T postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
+    '';
+    test-down.exec = ''
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml down -v
+    '';
+    test-pgcli.exec = ''
+      build-pgcli
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml up -d pgcli
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml exec -T pgcli /bin/sh -c 'echo  "SELECT * FROM accounts;" | pgcli -h postgres -U postgres'
+    '';
+    test-psql.exec = ''
+      build-psql
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml up -d psql
+      ${pkgs.docker}/bin/docker compose -f tests/docker-compose.yml exec -T psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
+    '';
+    tests.exec = ''
+      test-setup
+      test-psql
+      test-pgcli
+      test-down
     '';
   };
 
   # https://devenv.sh/basics/
   enterShell = ''
-    hello         # Run scripts directly
+      echo Welcome to
+      ${pkgs.figlet}/bin/figlet -f slant 'PSQL Pager' | ${pkgs.lolcat}/bin/lolcat
+      echo
   '';
 
   # https://devenv.sh/tasks/
@@ -61,6 +79,7 @@ in
 
   # https://devenv.sh/tests/
   enterTest = ''
+    tests
   '';
 
   # https://devenv.sh/git-hooks/
