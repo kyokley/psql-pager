@@ -28,20 +28,28 @@
 
   # https://devenv.sh/scripts/
   scripts = {
+    _build.exec = ''
+      docker build ''${DOCKER_BUILD_ARGS} -t kyokley/$@ --target=$@ .
+    '';
     build-pgcli.exec = ''
-      docker build ''${DOCKER_BUILD_ARGS} -t kyokley/pgcli --target=pgcli .
+      _build pgcli
     '';
     build-psql.exec = ''
-      docker build ''${DOCKER_BUILD_ARGS} -t kyokley/psql --target=psql .
+      _build psql
+    '';
+    build-usql.exec = ''
+      _build usql
     '';
     build.exec = ''
       build-pgcli
       build-psql
+      build-usql
     '';
     publish.exec = ''
       build
       docker push kyokley/pgcli
       docker push kyokley/psql
+      docker push kyokley/usql
     '';
     test-setup.exec = ''
       docker compose -f tests/docker-compose.yml up -d postgres
@@ -58,13 +66,19 @@
     test-psql.exec = ''
       build-psql
       docker compose -f tests/docker-compose.yml up -d psql
-      docker compose -f tests/docker-compose.yml exec -T psql /bin/sh -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
+      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh psql -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
+    '';
+    test-usql.exec = ''
+      build-usql
+      docker compose -f tests/docker-compose.yml up -d usql
+      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh usql -c 'echo  "SELECT * FROM accounts;" | usql postgres://postgres@postgres'
     '';
     tests.exec = ''
       set -e
       test-setup
       test-psql
       test-pgcli
+      test-usql
       test-down
     '';
   };

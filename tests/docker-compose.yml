@@ -17,5 +17,8 @@ services:
     image: kyokley/psql
     depends_on:
       - postgres
-    entrypoint:
-      /bin/sh -c 'tail -f /dev/null'
+
+  usql:
+    image: kyokley/usql
+    depends_on:
+      - postgres

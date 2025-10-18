@@ -37,3 +37,18 @@ COPY ./psql /pager
 WORKDIR /workspace
 
 ENTRYPOINT ["psql"]
+
+FROM usql/usql AS usql
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US.UTF-8
+ENV LC_ALL=en_US.UTF-8
+
+ENV PAGER=/pager/usql.sh
+RUN apt-get update && apt-get install -y vim-nox
+
+COPY ./common.vim /root/config/common.vim
+COPY ./usql /pager
+
+WORKDIR /workspace
+
+ENTRYPOINT ["usql"]
