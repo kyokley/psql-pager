@@ -2,7 +2,7 @@
   description = "Universal SQL Client";
 
   # Nixpkgs / NixOS version to use.
-  inputs.nixpkgs.url = "nixpkgs/nixos-21.05";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
 
   outputs = { self, nixpkgs }:
     let
@@ -32,35 +32,27 @@
         usql = with final; stdenv.mkDerivation rec {
           name = "usql-${version}";
 
-          unpackPhase = ":";
+          src = ./.;
+          nativeBuildInputs = [ final.makeWrapper ];
 
-          buildPhase =
-            ''
-              cat > usql_pager.sh <<EOF
-              #! $SHELL
-              what=-
-              SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-              PLUGIN_DIR="$SCRIPT_DIR/usql/plugin"
-              exec ${final.vim}/bin/vim --not-a-term -u $SCRIPT_DIR/common.vim -S $SCRIPT_DIR/usql.vim -c "let &runtimepath='$SCRIPT_DIR/share/${pname}/' . &runtimepath" -c Less $what
-              EOF
-              chmod +x usql_pager.sh
-
-              cat > usql <<EOF
-              #! $SHELL
-              SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-              PAGER=$SCRIPT_DIR/share/${pname}/usql_pager.sh ${prev.usql}/bin/usql $@
-              EOF
-              chmod +x usql
-            '';
+          buildPhase = ":";
 
           installPhase =
             ''
               mkdir -p $out/bin
-              mkdir -p $out/share/${pname}
+              mkdir -p $out/share
 
-              cp common.vim usql_pager.sh $out/share/${pname}/
-              cp -r ./usql $out/share/${pname}/
-              cp usql $out/bin/usql
+
+              cp -r usql $out/share/
+              cp common.vim $out/share/usql/
+
+              chmod +x $out/share/usql/usql_pager.sh
+
+              cp ${prev.usql}/bin/usql $out/bin/usql
+
+              wrapProgram $out/bin/usql \
+                --set PATH "${prev.lib.makeBinPath [ prev.vim prev.usql prev.busybox ]}" \
+                --set PAGER $out/share/usql/usql_pager.sh
             '';
         };
 

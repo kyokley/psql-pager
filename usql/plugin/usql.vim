@@ -1,4 +1,4 @@
-source $HOME/config/common.vim
+" source $HOME/config/common.vim
 
 fun! Less()
   if search('RECORD', 'nw') != 1 && search('^General', 'nw') != 1

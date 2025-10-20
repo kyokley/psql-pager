@@ -42,6 +42,7 @@ FROM usql/usql AS usql
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
+ENV SCRIPT_DIR=""
 
 ENV PAGER=/pager/usql.sh
 RUN apt-get update && apt-get install -y vim-nox
