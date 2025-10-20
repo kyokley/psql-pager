@@ -29,7 +29,7 @@
       # A Nixpkgs overlay.
       overlay = final: prev: {
 
-        usql = with final; stdenv.mkDerivation rec {
+        usql = final.stdenv.mkDerivation rec {
           name = "usql-${version}";
 
           unpackPhase = ":";
@@ -41,14 +41,14 @@
               what=-
               SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
               PLUGIN_DIR="$SCRIPT_DIR/usql/plugin"
-              exec ${final.vim}/bin/vim --not-a-term -u $SCRIPT_DIR/common.vim -S $SCRIPT_DIR/usql.vim -c "let &runtimepath='$SCRIPT_DIR/share/${pname}/' . &runtimepath" -c Less $what
+              exec ${final.vim}/bin/vim --not-a-term -u $SCRIPT_DIR/common.vim -S $SCRIPT_DIR/usql.vim -c "let &runtimepath='$SCRIPT_DIR/share/' . &runtimepath" -c Less $what
               EOF
               chmod +x usql_pager.sh
 
               cat > usql <<EOF
               #! $SHELL
               SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
-              PAGER=$SCRIPT_DIR/share/${pname}/usql_pager.sh ${prev.usql}/bin/usql $@
+              PAGER=$SCRIPT_DIR/share/usql_pager.sh ${prev.usql}/bin/usql $@
               EOF
               chmod +x usql
             '';
@@ -56,10 +56,10 @@
           installPhase =
             ''
               mkdir -p $out/bin
-              mkdir -p $out/share/${pname}
+              mkdir -p $out/share
 
-              cp common.vim usql_pager.sh $out/share/${pname}/
-              cp -r ./usql $out/share/${pname}/
+              cp common.vim usql_pager.sh $out/share/
+              cp -r ./usql $out/share/
               cp usql $out/bin/usql
             '';
         };
