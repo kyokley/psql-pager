@@ -47,10 +47,8 @@ ENV SCRIPT_DIR=""
 ENV PAGER=/share/usql/usql_pager.sh
 RUN apt-get update && apt-get install -y vim-nox
 
-COPY ./usql /share/
-COPY ./common.vim /share/usql/
-
-RUN ls /share/usql/usql_pager.sh
+COPY ./usql /share/usql
+COPY ./common.vim /share/usql/common.vim
 
 WORKDIR /workspace
 

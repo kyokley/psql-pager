@@ -75,6 +75,7 @@
     '';
     tests.exec = ''
       set -e
+      build
       test-setup
       test-psql
       test-pgcli
