@@ -41,7 +41,6 @@ ENTRYPOINT ["psql"]
 FROM usql/usql AS usql
 ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US.UTF-8
-ENV LC_ALL=en_US.UTF-8
 ENV SCRIPT_DIR=""
 
 ENV PAGER=/share/usql/usql_pager.sh
