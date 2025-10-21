@@ -71,7 +71,7 @@
     test-usql.exec = ''
       build-usql
       docker compose -f tests/docker-compose.yml up -d usql
-      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh usql -c 'echo  "SELECT * FROM accounts;" | usql postgres://postgres@postgres'
+      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh usql -c 'usql postgres://postgres@postgres -c "SELECT * FROM accounts;"'
     '';
     tests.exec = ''
       set -e
