@@ -55,7 +55,6 @@ function PostLess()
     norm! ^
 endfunction
 
-autocmd BufEnter * let &titlestring = 'PGCLI Pager'
 set title
 set nocompatible
 set nowrap

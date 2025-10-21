@@ -44,11 +44,11 @@ ENV LANGUAGE=en_US.UTF-8
 ENV LC_ALL=en_US.UTF-8
 ENV SCRIPT_DIR=""
 
-ENV PAGER=/pager/usql.sh
+ENV PAGER=/share/usql/usql_pager.sh
 RUN apt-get update && apt-get install -y vim-nox
 
-COPY ./common.vim /root/config/common.vim
-COPY ./usql /pager
+COPY ./usql /share/
+COPY ./common.vim /share/usql/
 
 WORKDIR /workspace
 

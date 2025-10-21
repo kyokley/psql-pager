@@ -42,7 +42,6 @@
               mkdir -p $out/bin
               mkdir -p $out/share
 
-
               cp -r usql $out/share/
               cp common.vim $out/share/usql/
 

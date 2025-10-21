@@ -1,5 +1,7 @@
 source $HOME/config/common.vim
 
+autocmd BufEnter * let &titlestring = 'PSQL Pager'
+
 fun! Less()
   if search('RECORD', 'nw') != 1 && search('^General', 'nw') != 1
       let line_length = max(map(getline(1, '$'), 'len(v:val)'))

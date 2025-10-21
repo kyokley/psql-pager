@@ -1,5 +1,7 @@
 source $HOME/config/common.vim
 
+autocmd BufEnter * let &titlestring = 'PGCLI Pager'
+
 fun! Less()
   if search('RECORD', 'nw') != 1 && search('\v(-+\+)*-+[\+\|]$', 'nw') == 1 && search('^|\sCommand\s\+|\sDescription\s\+|$', 'nw') != 2 "Determining if the output even needs formatting
       " Trim fancy table formatting
