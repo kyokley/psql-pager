@@ -50,6 +50,8 @@ RUN apt-get update && apt-get install -y vim-nox
 COPY ./usql /share/
 COPY ./common.vim /share/usql/
 
+RUN ls /share/usql/usql_pager.sh
+
 WORKDIR /workspace
 
 ENTRYPOINT ["usql"]
