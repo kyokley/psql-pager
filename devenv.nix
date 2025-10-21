@@ -65,12 +65,10 @@
     '';
     test-psql.exec = ''
       build-psql
-      docker compose -f tests/docker-compose.yml up -d psql
       docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh psql -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
     '';
     test-usql.exec = ''
       build-usql
-      docker compose -f tests/docker-compose.yml up -d usql
       docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh usql -c 'usql postgres://postgres@postgres -c "SELECT * FROM accounts;"'
     '';
     tests.exec = ''
