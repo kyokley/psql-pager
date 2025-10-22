@@ -12,19 +12,13 @@ services:
     image: kyokley/pgcli
     depends_on:
       - postgres
-    stdin_open: true # docker run -i
-    tty: true
 
   psql:
     image: kyokley/psql
     depends_on:
       - postgres
-    stdin_open: true # docker run -i
-    tty: true
 
   usql:
     image: kyokley/usql
     depends_on:
       - postgres
-    stdin_open: true # docker run -i
-    tty: true
