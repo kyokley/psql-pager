@@ -53,7 +53,7 @@
     '';
     test-setup.exec = ''
       docker compose -f tests/docker-compose.yml up -d postgres
-      sleep 1
+      sleep 2
       docker compose -f tests/docker-compose.yml exec -T postgres /bin/bash -c 'psql -U postgres -f /app/setup.sql'
     '';
     test-down.exec = ''
@@ -77,7 +77,10 @@
       test-setup
       test-psql
       test-pgcli
+      stty_settings=$(stty -a | grep -Po '(?<=columns )\d+')
+      stty cols 1000
       test-usql
+      stty cols $stty_settings
       test-down
     '';
   };
