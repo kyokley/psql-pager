@@ -75,10 +75,10 @@
       set -e
       build
       test-setup
-      test-psql
-      test-pgcli
       stty_settings=$(stty -a | grep -Po '(?<=columns )\d+')
       stty cols 1000
+      test-psql
+      test-pgcli
       test-usql
       stty cols $stty_settings
       test-down
