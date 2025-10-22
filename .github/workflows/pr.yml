@@ -17,4 +17,4 @@ jobs:
         run: nix profile install nixpkgs#devenv
       - name: Run devenv tests
         shell: 'script -q -e -c "bash {0}"'
-        run: devenv test
+        run: devenv test -q
