@@ -75,12 +75,9 @@
       set -e
       build
       test-setup
-      stty_settings=$(stty -a | grep -Po '(?<=columns )\d+')
-      stty cols 1000
       test-psql
       test-pgcli
-      test-usql
-      stty cols $stty_settings
+      # test-usql # TODO: Figure out how to close pager in Github Action testing
       test-down
     '';
   };
