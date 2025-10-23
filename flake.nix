@@ -61,6 +61,22 @@
       packages = forAllSystems (system:
         {
           inherit (nixpkgsFor.${system}) usql;
+          docker-image = nixpkgsFor.${system}.dockerTools.buildImage {
+            name = "kyokley/usql";
+            tag = "latest";
+            copyToRoot = nixpkgsFor.${system}.buildEnv {
+              name = "image-root";
+              paths = [ self.packages.${system}.usql ];
+              pathsToLink = ["/bin"];
+            };
+            runAsRoot = ''
+              #!${nixpkgsFor.${system}.runtimeShell}
+              ${nixpkgsFor.${system}.dockerTools.shadowSetup}
+            '';
+            config = {
+              Entrypoint = ["/bin/usql"];
+            };
+          };
         });
 
       # The default package for 'nix build'. This makes sense if the
