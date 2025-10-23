@@ -50,13 +50,26 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USER }}/pgcli
 
-      - name: Build usql
-        uses: docker/build-push-action@v2
+  nix:
+    name: Build images with Nix
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@master
         with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: Dockerfile
-          target: usql
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ secrets.DOCKER_USER }}/usql
+          platforms: all
+      - uses: cachix/install-nix-action@v30
+      - name: Docker Login
+        env:
+          DOCKER_USER: ${{secrets.DOCKER_USER}}
+          DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+        run: |
+          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+      - name: Build with nix
+        run: |
+          nix build '.#docker-image'
+          docker load < result
+      - name: Publish
+        run: |
+          docker push kyokley/usql
