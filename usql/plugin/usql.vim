@@ -1,6 +1,4 @@
-source $HOME/config/common.vim
-
-autocmd BufEnter * let &titlestring = 'PSQL Pager'
+autocmd BufEnter * let &titlestring = 'USQL Pager'
 
 fun! Less()
   if search('RECORD', 'nw') != 1 && search('^General', 'nw') != 1
