@@ -1,5 +1,10 @@
-{ pkgs, lib, config, inputs, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: {
   # https://devenv.sh/basics/
   env = {
     DOCKER_BUILD_ARGS = lib.mkDefault "";
@@ -84,9 +89,9 @@
 
   # https://devenv.sh/basics/
   enterShell = ''
-      echo Welcome to
-      ${pkgs.figlet}/bin/figlet -f slant 'PSQL Pager' | ${pkgs.lolcat}/bin/lolcat
-      echo
+    echo Welcome to
+    ${pkgs.figlet}/bin/figlet -f slant 'PSQL Pager' | ${pkgs.lolcat}/bin/lolcat
+    echo
   '';
 
   # https://devenv.sh/tasks/
@@ -101,7 +106,9 @@
   '';
 
   # https://devenv.sh/git-hooks/
-  # git-hooks.hooks.shellcheck.enable = true;
+  git-hooks.hooks = {
+    alejandra.enable = true;
+  };
 
   # See full reference at https://devenv.sh/reference/options/
 }

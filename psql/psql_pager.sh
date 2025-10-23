@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
 PLUGIN_DIR="$SCRIPT_DIR/plugin"
