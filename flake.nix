@@ -2,7 +2,9 @@
   description = "Universal SQL Client";
 
   # Nixpkgs / NixOS version to use.
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+  };
 
   outputs = {
     self,
@@ -83,12 +85,39 @@
                 --set PAGER $out/share/psql/psql_pager.sh
             '';
           };
+
+      pgcli = with final;
+        stdenv.mkDerivation rec {
+          name = "pgcli-${version}";
+
+          src = ./.;
+          nativeBuildInputs = [final.makeWrapper];
+
+          buildPhase = ":";
+
+          installPhase = ''
+            mkdir -p $out/bin
+            mkdir -p $out/share
+
+            cp -r pgcli $out/share/
+            cp common.vim $out/share/pgcli/
+
+            chmod +x $out/share/pgcli/pgcli_pager.sh
+
+            cp ${prev.pgcli}/bin/pgcli $out/bin/pgcli
+
+            wrapProgram $out/bin/pgcli \
+              --set PATH "${prev.lib.makeBinPath [prev.vim prev.pgcli prev.busybox]}" \
+              --set PAGER $out/share/pgcli/pgcli_pager.sh
+          '';
+        };
     };
 
     # Provide some binary packages for selected system types.
     packages = forAllSystems (system: {
       inherit (nixpkgsFor.${system}) usql;
       inherit (nixpkgsFor.${system}) psql;
+      inherit (nixpkgsFor.${system}) pgcli;
       usql-image = nixpkgsFor.${system}.dockerTools.buildImage {
         name = "kyokley/usql";
         tag = "latest";
@@ -116,6 +145,19 @@
         };
         config = {
           Entrypoint = ["/bin/psql"];
+        };
+      };
+
+      pgcli-image = nixpkgsFor.${system}.dockerTools.buildImage {
+        name = "kyokley/pgcli-nix";
+        tag = "latest";
+        copyToRoot = nixpkgsFor.${system}.buildEnv {
+          name = "image-root";
+          paths = [self.packages.${system}.pgcli];
+          pathsToLink = ["/bin"];
+        };
+        config = {
+          Entrypoint = ["/bin/pgcli"];
         };
       };
     });
