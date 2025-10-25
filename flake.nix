@@ -26,11 +26,11 @@
     nixpkgsFor = forAllSystems (system:
       import nixpkgs {
         inherit system;
-        overlays = [self.overlay];
+        overlays = [self.overlays.default];
       });
   in {
     # A Nixpkgs overlay.
-    overlay = final: prev: {
+    overlays.default = final: prev: {
       usql = with final;
         stdenv.mkDerivation rec {
           name = "usql-${version}";
@@ -160,20 +160,32 @@
           Entrypoint = ["/bin/pgcli"];
         };
       };
+
+      default = self.packages.${system}.usql;
     });
 
     # The default package for 'nix build'. This makes sense if the
     # flake provides only one package or there is a clear "main"
     # package.
-    defaultPackage = forAllSystems (system: self.packages.${system}.usql);
+    # defaultPackage = forAllSystems (system: self.packages.${system}.usql);
 
     # A NixOS module, if applicable (e.g. if the package provides a system service).
-    nixosModules.usql = {pkgs, ...}: {
-      nixpkgs.overlays = [self.overlay];
+    nixosModules = {
+      usql = {pkgs, ...}: {
+        nixpkgs.overlays = [self.overlays.default];
 
-      environment.systemPackages = [pkgs.usql];
+        environment.systemPackages = [pkgs.usql];
+      };
+      psql = {pkgs, ...}: {
+        nixpkgs.overlays = [self.overlays.default];
 
-      #systemd.services = { ... };
+        environment.systemPackages = [pkgs.psql];
+      };
+      pgcli = {pkgs, ...}: {
+        nixpkgs.overlays = [self.overlays.default];
+
+        environment.systemPackages = [pkgs.pgcli];
+      };
     };
 
     # Tests run by 'nix flake check' and by Hydra.
@@ -184,18 +196,23 @@
           with nixpkgsFor.${system};
             {
               inherit (self.packages.${system}) usql;
+              inherit (self.packages.${system}) psql;
+              inherit (self.packages.${system}) pgcli;
 
               # Additional tests, if applicable.
               test = stdenv.mkDerivation {
                 name = "usql-test-${version}";
 
-                buildInputs = [usql];
+                buildInputs = [usql psql pgcli];
 
                 unpackPhase = "true";
 
                 buildPhase = ''
                   echo 'running some integration tests'
                   echo TODO: Add tests!!!
+                  usql --version
+                  psql --version
+                  pgcli --version
                 '';
 
                 installPhase = "mkdir -p $out";
@@ -207,16 +224,23 @@
                 inherit system;
               };
                 makeTest {
+                  name = "test";
                   nodes = {
                     client = {...}: {
-                      imports = [self.nixosModules.usql];
+                      imports = [
+                        self.nixosModules.usql
+                        self.nixosModules.psql
+                        self.nixosModules.pgcli
+                      ];
                     };
                   };
 
                   testScript = ''
                     start_all()
                     client.wait_for_unit("multi-user.target")
-                    client.succeed("hello")
+                    client.succeed("usql --version")
+                    client.succeed("psql --version")
+                    client.succeed("pgcli --version")
                   '';
                 };
             }
