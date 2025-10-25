@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - docker-nix
 
 jobs:
   docker:
@@ -25,8 +26,11 @@ jobs:
           DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
         run: |
           docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-      - name: Build and publish
+      - name: Build
         run: |
           nix build '.#${{ matrix.app }}-image'
           docker load < result
+      - name: Push image
+        if: github.event_name != 'pull_request'
+        run: |
           docker push kyokley/${{ matrix.app }}
