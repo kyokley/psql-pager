@@ -1,5 +1,3 @@
-source $HOME/config/common.vim
-
 autocmd BufEnter * let &titlestring = 'PSQL Pager'
 
 fun! Less()

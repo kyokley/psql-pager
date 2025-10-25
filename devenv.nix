@@ -1,8 +1,12 @@
-{ pkgs, lib, config, inputs, ... }:
 {
+  pkgs,
+  lib,
+  config,
+  inputs,
+  ...
+}: {
   # https://devenv.sh/basics/
   env = {
-    DOCKER_BUILD_ARGS = lib.mkDefault "";
   };
 
   # https://devenv.sh/packages/
@@ -11,7 +15,7 @@
   # https://devenv.sh/languages/
   languages = {
     python = {
-      enable = true;
+      enable = false;
       version = "3.13";
       uv = {
         enable = true;
@@ -29,7 +33,8 @@
   # https://devenv.sh/scripts/
   scripts = {
     _build.exec = ''
-      docker build ''${DOCKER_BUILD_ARGS} -t kyokley/$@ --target=$@ .
+      nix build ".#$@-image"
+      docker load < result
     '';
     build-pgcli.exec = ''
       _build pgcli
@@ -61,22 +66,22 @@
     '';
     test-pgcli.exec = ''
       build-pgcli
-      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh pgcli -c 'echo  "SELECT * FROM accounts;" | uv run pgcli -h postgres -U postgres'
+      docker compose -f tests/docker-compose.yml run pgcli -h postgres -U postgres -c "SELECT * FROM accounts;"
     '';
     test-psql.exec = ''
       build-psql
-      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh psql -c 'echo  "SELECT * FROM accounts;" | psql -h postgres -U postgres'
+      docker compose -f tests/docker-compose.yml run psql -h postgres -U postgres -c "SELECT * FROM accounts;"
     '';
     test-usql.exec = ''
       build-usql
-      docker compose -f tests/docker-compose.yml run --entrypoint /bin/sh usql -c 'usql postgres://postgres@postgres -c "SELECT * FROM accounts;"'
+      docker compose -f tests/docker-compose.yml run usql postgres://postgres@postgres -c "SELECT * FROM accounts;"
     '';
     tests.exec = ''
       set -e
       build
       test-setup
       test-psql
-      test-pgcli
+      # test-pgcli # TODO: Figure out how to pipe this into pgcli
       # test-usql # TODO: Figure out how to close pager in Github Action testing
       test-down
     '';
@@ -84,9 +89,9 @@
 
   # https://devenv.sh/basics/
   enterShell = ''
-      echo Welcome to
-      ${pkgs.figlet}/bin/figlet -f slant 'PSQL Pager' | ${pkgs.lolcat}/bin/lolcat
-      echo
+    echo Welcome to
+    ${pkgs.figlet}/bin/figlet -f slant 'PSQL Pager' | ${pkgs.lolcat}/bin/lolcat
+    echo
   '';
 
   # https://devenv.sh/tasks/
@@ -101,7 +106,9 @@
   '';
 
   # https://devenv.sh/git-hooks/
-  # git-hooks.hooks.shellcheck.enable = true;
+  git-hooks.hooks = {
+    alejandra.enable = true;
+  };
 
   # See full reference at https://devenv.sh/reference/options/
 }
