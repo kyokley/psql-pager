@@ -136,7 +136,7 @@
       };
 
       psql-image = nixpkgsFor.${system}.dockerTools.buildImage {
-        name = "kyokley/psql-nix";
+        name = "kyokley/psql";
         tag = "latest";
         copyToRoot = nixpkgsFor.${system}.buildEnv {
           name = "image-root";
@@ -149,7 +149,7 @@
       };
 
       pgcli-image = nixpkgsFor.${system}.dockerTools.buildImage {
-        name = "kyokley/pgcli-nix";
+        name = "kyokley/pgcli";
         tag = "latest";
         copyToRoot = nixpkgsFor.${system}.buildEnv {
           name = "image-root";
