@@ -11,4 +11,4 @@ jobs:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v30
       - name: Run devenv tests
-        run: nix flake checks
+        run: nix flake check
