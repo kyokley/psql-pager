@@ -164,11 +164,6 @@
       default = self.packages.${system}.usql;
     });
 
-    # The default package for 'nix build'. This makes sense if the
-    # flake provides only one package or there is a clear "main"
-    # package.
-    # defaultPackage = forAllSystems (system: self.packages.${system}.usql);
-
     # A NixOS module, if applicable (e.g. if the package provides a system service).
     nixosModules = {
       usql = {pkgs, ...}: {
@@ -201,7 +196,7 @@
 
               # Additional tests, if applicable.
               test = stdenv.mkDerivation {
-                name = "usql-test-${version}";
+                name = "pager-test-${version}";
 
                 buildInputs = [usql psql pgcli];
 
@@ -209,7 +204,6 @@
 
                 buildPhase = ''
                   echo 'running some integration tests'
-                  echo TODO: Add tests!!!
                   usql --version
                   psql --version
                   pgcli --version
