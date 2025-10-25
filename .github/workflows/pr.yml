@@ -10,10 +10,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: cachix/install-nix-action@v30
-      - uses: cachix/cachix-action@v14
-        with:
-          name: devenv
-      - name: Install devenv.sh
-        run: nix profile install nixpkgs#devenv
       - name: Run devenv tests
-        run: devenv test
+        run: nix flake checks
