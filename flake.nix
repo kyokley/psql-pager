@@ -32,7 +32,7 @@
     # A Nixpkgs overlay.
     overlays.default = final: prev: {
       usql = with final;
-        stdenv.mkDerivation rec {
+        stdenv.mkDerivation {
           name = "usql-${version}";
 
           src = ./.;
@@ -52,7 +52,7 @@
             cp ${prev.usql}/bin/usql $out/bin/usql
 
             wrapProgram $out/bin/usql \
-              --set PATH "${prev.lib.makeBinPath [prev.vim prev.usql prev.busybox]}" \
+              --set PATH "${prev.lib.makeBinPath [prev.vim prev.usql prev.coreutils]}" \
               --set PAGER $out/share/usql/usql_pager.sh
           '';
         };
@@ -61,7 +61,7 @@
         postgres_version = "postgresql_17";
       in
         with final;
-          stdenv.mkDerivation rec {
+          stdenv.mkDerivation {
             name = "psql-${version}";
 
             src = ./.;
@@ -81,13 +81,13 @@
               cp ${prev.${postgres_version}}/bin/psql $out/bin/psql
 
               wrapProgram $out/bin/psql \
-                --set PATH "${prev.lib.makeBinPath [prev.vim prev.busybox]}" \
+                --set PATH "${prev.lib.makeBinPath [prev.vim prev.coreutils]}" \
                 --set PAGER $out/share/psql/psql_pager.sh
             '';
           };
 
       pgcli = with final;
-        stdenv.mkDerivation rec {
+        stdenv.mkDerivation {
           name = "pgcli-${version}";
 
           src = ./.;
@@ -107,7 +107,7 @@
             cp ${prev.pgcli}/bin/pgcli $out/bin/pgcli
 
             wrapProgram $out/bin/pgcli \
-              --set PATH "${prev.lib.makeBinPath [prev.vim prev.pgcli prev.busybox]}" \
+              --set PATH "${prev.lib.makeBinPath [prev.vim prev.pgcli prev.coreutils]}" \
               --set PAGER $out/share/pgcli/pgcli_pager.sh
           '';
         };
