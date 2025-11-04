@@ -1,6 +1,6 @@
-# PSQL Pager
+# SQL Pager
 
-An enhanced pager for psql output
+An enhanced pager for sql output (supports psql, pgcli, and usql!)
 
 ![Screenshot](/../screenshots/screenshots/output.gif?raw=true)
 
@@ -26,6 +26,11 @@ For pgcli:
 docker run --rm -it --network=host kyokley/pgcli postgresql://postgres@localhost:5432
 ```
 
+For usql:
+```
+docker run --rm -it --net=host kyokley/usql oracle://oracle@localhost/db
+```
+
 Since those commands are a little wordy, it can be useful to alias them in your bashrc
 ```
 psql() {
@@ -49,6 +54,17 @@ docker run \
     kyokley/pgcli \
     "$@"
 }
+
+usql() {
+docker run \
+    --rm -it \
+    --net=host \
+    -e "PGTZ=America/Chicago" \
+    -e "PSQL_HISTORY=/root/.psql_history" \
+    -v "$HOME/.psql_history:/root/.psql_history" \
+    kyokley/pgcli \
+    "$@"
+}
 ```
 Now the commands can be called just as you'd expect.
 For psql:
@@ -58,6 +74,10 @@ psql -U postgres -h localhost -p 5432
 For pgcli:
 ```
 pgcli postgresql://postgres@localhost:5432
+```
+For usql:
+```
+usql oracle://oracle@localhost/db
 ```
 
 ## How it works
