@@ -80,6 +80,7 @@
 
               cp ${prev.${postgres_version}}/bin/psql $out/bin/psql
               cp ${prev.${postgres_version}}/bin/pg_dump $out/bin/pg_dump
+              cp ${prev.${postgres_version}}/bin/pg_restore $out/bin/pg_restore
 
               wrapProgram $out/bin/psql \
                 --set PATH "${prev.lib.makeBinPath [prev.vim prev.coreutils]}" \
