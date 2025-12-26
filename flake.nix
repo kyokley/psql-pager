@@ -79,6 +79,7 @@
               chmod +x $out/share/psql/psql_pager.sh
 
               cp ${prev.${postgres_version}}/bin/psql $out/bin/psql
+              cp ${prev.${postgres_version}}/bin/pg_dump $out/bin/pg_dump
 
               wrapProgram $out/bin/psql \
                 --set PATH "${prev.lib.makeBinPath [prev.vim prev.coreutils]}" \
