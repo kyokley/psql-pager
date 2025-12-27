@@ -190,56 +190,51 @@
       forAllSystems
       (
         system:
-          with nixpkgsFor.${system};
-            {
-              inherit (self.packages.${system}) usql;
-              inherit (self.packages.${system}) psql;
-              inherit (self.packages.${system}) pgcli;
+          with nixpkgsFor.${system}; {
+            # Additional tests, if applicable.
+            test = stdenv.mkDerivation {
+              name = "pager-test-${version}";
 
-              # Additional tests, if applicable.
-              test = stdenv.mkDerivation {
-                name = "pager-test-${version}";
+              buildInputs = [usql psql pgcli];
 
-                buildInputs = [usql psql pgcli];
+              unpackPhase = "true";
 
-                unpackPhase = "true";
+              buildPhase = ''
+                echo 'running some integration tests'
+                usql --version
+                psql --version
+                pgcli --version
+              '';
 
-                buildPhase = ''
-                  echo 'running some integration tests'
-                  usql --version
-                  psql --version
-                  pgcli --version
-                '';
+              installPhase = "mkdir -p $out";
+            };
 
-                installPhase = "mkdir -p $out";
-              };
-            }
-            // lib.optionalAttrs stdenv.isLinux {
-              # A VM test of the NixOS module.
-              vmTest = with import (nixpkgs + "/nixos/lib/testing-python.nix") {
-                inherit system;
-              };
-                makeTest {
-                  name = "test";
-                  nodes = {
-                    client = {...}: {
-                      imports = [
-                        self.nixosModules.usql
-                        self.nixosModules.psql
-                        self.nixosModules.pgcli
-                      ];
-                    };
-                  };
-
-                  testScript = ''
-                    start_all()
-                    client.wait_for_unit("multi-user.target")
-                    client.succeed("usql --version")
-                    client.succeed("psql --version")
-                    client.succeed("pgcli --version")
-                  '';
+            # A VM test of the NixOS module.
+            moduleTest = pkgs.testers.runNixOSTest {
+              name = "moduleTest";
+              nodes = {
+                client = {...}: {
+                  imports = [
+                    self.nixosModules.usql
+                    self.nixosModules.psql
+                    self.nixosModules.pgcli
+                  ];
                 };
-            }
+
+                db = {
+                  # Need to load postgres container here
+                };
+              };
+
+              testScript = ''
+                start_all()
+                client.wait_for_unit("multi-user.target")
+                client.succeed("usql --version")
+                client.succeed("psql --version")
+                client.succeed("pgcli --version")
+              '';
+            };
+          }
       );
   };
 }
