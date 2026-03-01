@@ -52,7 +52,7 @@
             cp ${prev.usql}/bin/usql $out/bin/usql
 
             wrapProgram $out/bin/usql \
-              --set PATH "${prev.lib.makeBinPath [prev.vim prev.usql prev.coreutils]}" \
+              --set PATH "${prev.lib.makeBinPath [prev.vim prev.usql coreutils]}" \
               --set PAGER $out/share/usql/usql_pager.sh
           '';
         };
